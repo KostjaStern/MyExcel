@@ -1,15 +1,27 @@
 package com.sternkn.testtasks.myexcel;
 
 import com.sternkn.testtasks.myexcel.excel.ExcelTable; 
+import com.sternkn.testtasks.myexcel.excel.ExpressionItem;
+import com.sternkn.testtasks.myexcel.excel.TableCell;
+import com.sternkn.testtasks.myexcel.excel.Expression;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.StringTokenizer;
+
+import org.apache.log4j.Logger;
 
 public class Main
 {
+	public static Logger LOG = Logger.getLogger(Main.class);
+	
     public static void main(String[] args)
     {
+    	Config.initLogs();
+    	
+
+/*    	
     	String test1 = "28";
     	String test2 = "28.23";
     	String test3 = "2,23";
@@ -70,7 +82,32 @@ public class Main
     	System.out.println("isDouble(test3) = " + isDouble(test3));
     	System.out.println("isDouble(test4) = " + isDouble(test4));
     	
-    	ExcelTable table = new ExcelTable("test.csv"); 
+    	ExcelTable table = new ExcelTable("test.csv");
+*/
+    	
+    	// Expression exp = new Expression("a1(b3 - C1 + 2* 3.14) + 5,213  + 0.1289 + Z23 + C3 / b3 ^ 3");
+    	Expression exp = new Expression("((A24/5)+B8)*B6");
+    	
+    	/**
+    	 *   A => 65
+    	 *   Z => 90
+    	 *   a => 97
+    	 *   z => 122
+    	 */
+    	
+//    	TableCell tableCell = new TableCell("=A1*(B3+C1)+C3/B3", 6, 10); 
+//    	System.out.println("tableCell = " + tableCell);
+    	
+/*    	
+    	String test = "::::ddd::test:2:3:444:::fff";
+    	
+    	String[] list = test.split(":");
+        
+    	for(String item: list)
+    	{
+    		System.out.println("item = " + item);
+    	}
+*/    	
     }
     
     
@@ -78,7 +115,7 @@ public class Main
     {
     	if(value == null) throw new NullPointerException("value is null");
     	
-    	if(!value.matches("-?\\d+([\\.|\\,]\\d+)?")){
+    	if(!value.matches("\\d+[\\.|\\,]\\d+")){
     		throw new NumberFormatException(value + " is not double value");
     	}
     	
