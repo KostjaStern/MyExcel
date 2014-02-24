@@ -18,25 +18,25 @@ public class Expression
 {
 	public static Logger LOG = Logger.getLogger(Expression.class);
 	
+	/**
+	 *  @param exp  - expression
+	 *  
+	 *  Example:   (A24+2.56*0.59-21/7+B8)/1.2-6.7*2+G4*7.21
+	 */
     public Expression(String exp)
     {
     	if(exp == null) throw new IllegalArgumentException("exp is null");
-    	// expression = exp.toLowerCase(Locale.ENGLISH);
     	
-    	LOG.debug("exp = " + exp);
+    	expression = "(" + exp.trim().toUpperCase(Locale.ENGLISH) + ")";  // .replaceAll("[^A-Z0-9()+\\-/*.,]","");
     	
-    	
-    	expression = exp.trim().toUpperCase(Locale.ENGLISH);  // .replaceAll("[^A-Z0-9()+\\-/*.,]","");
-    	
-    	LOG.debug("expression = " + expression);
+    	// LOG.debug("expression = " + expression);
     	
     	rpn = new LinkedList<ExpressionItem>();
     	
     	ExpressionItem expItem = new ExpressionItem();
     	Stack<ExpressionItem> operators = new Stack<ExpressionItem>(); 
     	CharType lastType = CharType.UNKNOWN; 
-    	// ExpItemType lastItemType = ExpItemType.EMPTY; 
-    	
+
     	for(int i = 0; i < expression.length(); i++)
     	{
     		char expChar = expression.charAt(i);
@@ -47,7 +47,6 @@ public class Expression
     				throw new ExpressionException("invalid character " + expChar + " in expression " + expression);
     			
     			case BRACKET_OPEN:
-    				// System.out.println("BRACKET_OPEN");
     				if(lastType == CharType.LETTER || 
    			  		   lastType == CharType.DECIMAL_SEPARATOR ||
    			  		   lastType == CharType.BRACKET_CLOSE ||
@@ -59,30 +58,28 @@ public class Expression
     				expItem = new ExpressionItem("(", ExpItemType.BRACKET_OPEN);
     				operators.push(expItem);
     				
-    				// System.out.println("operators.size() = " + operators.size());
-    				
     				lastType = CharType.BRACKET_OPEN;
     			break;
     			
     			case BRACKET_CLOSE:
-    				if(lastType != CharType.DIGIT){
+    				if(lastType == CharType.BRACKET_OPEN ||
+  					   lastType == CharType.DECIMAL_SEPARATOR ||
+  					   lastType == CharType.LETTER ||
+  					   lastType == CharType.OPERATOR ||
+  					   operators.isEmpty()
+    				  ){
     					throw new ExpressionException("invalid expression: " + expression);
     				}
     				
-    				rpn.add(expItem);
-    				LOG.debug("expItem = " + expItem);
-    				
-    				if(operators.isEmpty()){
-    					throw new ExpressionException("invalid expression: " + expression);
+    				if(lastType == CharType.DIGIT){
+    				    rpn.add(expItem);
     				}
     				
     				ExpressionItem operator = operators.pop();
     				
-//    				System.out.println("operators.size() = " + operators.size());
-    				while(operator.getType() != ExpItemType.BRACKET_CLOSE)
+    				while(operator.getType() != ExpItemType.BRACKET_OPEN)
     				{
     					rpn.add(operator);
-    					LOG.debug("expItem = " + expItem);
     					
     					if(operators.isEmpty()){
         					throw new ExpressionException("invalid expression: " + expression);
@@ -97,10 +94,9 @@ public class Expression
     				if(lastType != CharType.DIGIT){
     					throw new ExpressionException("invalid expression: " + expression);
     				}
-    				else {
-    					expItem.appendToValue(expChar);
-    					expItem.setType(ExpItemType.NUMB_DOUBLE);
-    				}
+    				
+					expItem.appendToValue(expChar);
+					expItem.setType(ExpItemType.NUMB_DOUBLE);
     				
     				lastType = CharType.DECIMAL_SEPARATOR;
     			break;
@@ -150,19 +146,15 @@ public class Expression
     				
     				if(lastType == CharType.DIGIT){
     					rpn.add(expItem);
-    					LOG.debug("expItem = " + expItem);
     				}
     				
     				
     				ExpressionItem curOp = new ExpressionItem(expChar, ExpItemType.OPERATOR); 
-//    				System.out.println("curOp.getPriority() = " + curOp.getPriority());
-//    				System.out.println("curOp.getValue() = " + curOp.getValue());
     				
     				while(!operators.isEmpty() &&  operators.peek().getPriority() >= curOp.getPriority())
     				{
     					expItem = operators.pop(); 
     					rpn.add(expItem);
-    					LOG.debug("expItem = " + expItem);
     				}
     				operators.push(curOp);
     				
@@ -172,15 +164,21 @@ public class Expression
     			default:
     		}
     		
-//    		System.out.println("expChar = " + expChar + "  , code = " + (int)expChar);
     	}
     	
-    	
 //    	for(ExpressionItem item: rpn){
-//    		System.out.println("item.getValue() = " + item.getValue() + " " + item.getType());
+//    		LOG.debug("item.getValue() = " + item.getValue() + " " + item.getType());
 //    	}
     }
     
+    
+    public List<ExpressionItem> getRPN(){
+    	return rpn;
+    }
+    
+    public String getExpression(){
+    	return expression;
+    }
     
     private CharType getCharType(char ch)
     {
@@ -208,9 +206,6 @@ public class Expression
     	return CharType.UNKNOWN;
     }
     
-    
     private String expression; 
-    
-    private List<ExpressionItem> rpn; // 
-    
+    private List<ExpressionItem> rpn; //  http://en.wikipedia.org/wiki/Reverse_Polish_notation 
 }

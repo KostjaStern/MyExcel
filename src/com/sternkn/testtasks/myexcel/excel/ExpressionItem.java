@@ -7,7 +7,8 @@ public class ExpressionItem
     	if(value == null) throw new IllegalArgumentException("value is null");
     	
     	this.type  = type;
-    	this.value = new StringBuilder(value);
+    	this.value = new StringBuilder();
+    	this.value.append(value);
     	initPriority();
     }
     
@@ -54,6 +55,26 @@ public class ExpressionItem
     	return value.toString();
     }
     
+    public int getValueInt()
+    {
+    	try {
+    		return Integer.parseInt(getValue());
+    	}
+    	catch (NumberFormatException e){
+    		return 0;
+    	}
+    }
+    
+    public double getValueDouble()
+    {
+    	try {
+    		return ParseValue.parseDouble(getValue());
+    	}
+    	catch (NumberFormatException e){
+    		return 0;
+    	}
+    }
+    
     public void setValue(String value){
     	this.value = new StringBuilder(value);
     }
@@ -85,6 +106,8 @@ public class ExpressionItem
     {
     	return "ExpressionItem[value = " + value + " , type = " + type + " , priority = " + priority + "]";
     }
+    
+    
     
     private StringBuilder value;
     private ExpItemType   type;

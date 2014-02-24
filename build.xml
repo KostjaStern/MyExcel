@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<project name="MyExcel" default="CreateJar">
+    <target name="CreateJar" description="Create Jar file">
+        <jar destfile="myexcel.jar" basedir="bin/" includes="**/*.class" >
+            <manifest>
+                <attribute name="Main-Class" value="com.sternkn.testtasks.myexcel.Main"/>
+				<attribute name="Class-Path" value="lib/log4j-1.2.17.jar"/>
+            </manifest>  
+        </jar>
+    </target>
+</project>
