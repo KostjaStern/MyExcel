@@ -15,10 +15,15 @@ public class ParseValue
 		// LOG.debug("value = " + value);
 		
     	if(value == null) throw new IllegalArgumentException("value is null");
+    	if(value.length() == 0) throw new IllegalArgumentException("value is empty");
+    	
+    	if(value.substring(0, 1).equals("+")){
+    		value = value.substring(1);
+    	}
     	
     	DecimalFormat df;
     	
-    	if(value.matches("\\d+(\\.\\d+)*"))
+    	if(value.matches("-{0,1}\\d+(\\.\\d+){0,1}"))
     	{
     		df = new DecimalFormat();
     		DecimalFormatSymbols decPoint = new DecimalFormatSymbols();
@@ -30,11 +35,14 @@ public class ParseValue
     			return df.parse(value).doubleValue();
     		}
     		catch (ParseException e){
+    			LOG.debug("ParseException", e);
     			throw new NumberFormatException(e.getMessage());
     		}
     	}
     	
-    	if(value.matches("\\d+(,\\d+)*"))
+    	// LOG.debug("not matches");
+    	
+    	if(value.matches("-{0,1}\\d+(,\\d+){0,1}"))
     	{
         	df = new DecimalFormat();
         	DecimalFormatSymbols decComma = new DecimalFormatSymbols();

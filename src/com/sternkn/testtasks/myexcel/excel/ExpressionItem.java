@@ -108,6 +108,21 @@ public class ExpressionItem
     }
     
     
+    @Override
+    public boolean equals(Object otherObj)
+    {
+    	if(this == otherObj) return true;
+    	if(otherObj == null) return false;
+    	
+    	if(getClass() != otherObj.getClass()) return false;
+    	
+    	ExpressionItem other = (ExpressionItem)otherObj; 
+    	
+    	String val = value.toString();
+    	
+    	return val.equals(other.getValue()) &&
+    		   type == other.getType();
+    }
     
     private StringBuilder value;
     private ExpItemType   type;

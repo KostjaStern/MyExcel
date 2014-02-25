@@ -23,7 +23,7 @@ public class Expression
 	 *  
 	 *  Example:   (A24+2.56*0.59-21/7+B8)/1.2-6.7*2+G4*7.21
 	 */
-    public Expression(String exp)
+    public Expression(String exp) throws ExpressionException
     {
     	if(exp == null) throw new IllegalArgumentException("exp is null");
     	

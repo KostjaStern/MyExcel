@@ -155,11 +155,11 @@ public class TableCell
 						double a1 = arg1.getValueDouble();
 						double a2 = arg2.getValueDouble();
 						
-					/*	
-						LOG.debug("arg1.getValue() = " + arg1.getValue());
-						LOG.debug("arg2.getValue() = " + arg2.getValue());
-						LOG.debug("a1 = " + a1 + " , a2 = " + a2 + " operation = " + expItem.getValue());
-					*/	
+						
+//						LOG.debug("arg1.getValue() = " + arg1.getValue());
+//						LOG.debug("arg2.getValue() = " + arg2.getValue());
+//						LOG.debug("a1 = " + a1 + " , a2 = " + a2 + " operation = " + expItem.getValue());
+						
 						
 						double r;
 						if(expItem.getValue().equals("+")){
