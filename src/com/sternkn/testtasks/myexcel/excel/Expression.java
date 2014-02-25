@@ -27,7 +27,24 @@ public class Expression
     {
     	if(exp == null) throw new IllegalArgumentException("exp is null");
     	
-    	expression = "(" + exp.trim().toUpperCase(Locale.ENGLISH) + ")";  // .replaceAll("[^A-Z0-9()+\\-/*.,]","");
+    	
+    	String expClear = exp.trim().toUpperCase(Locale.ENGLISH);
+    	
+    	// add * operator where it have in mind
+        String pattern1 = "([0-9)])(\\s+)([(0-9A-Z])";
+        expClear = expClear.replaceAll(pattern1, "$1*$3"); 
+    	
+        String pattern2 = "([0-9)])(\\()";
+        expClear = expClear.replaceAll(pattern2, "$1*$2");
+        
+        String pattern3 = "(\\))([0-9A-Z])";
+        expClear = expClear.replaceAll(pattern3, "$1*$2");
+    	
+        // remove space 
+        expClear = expClear.replaceAll("\\s+", ""); 
+    	
+    	
+    	expression = "(" + expClear + ")";  // .replaceAll("[^A-Z0-9()+\\-/*.,]","");
     	
     	// LOG.debug("expression = " + expression);
     	

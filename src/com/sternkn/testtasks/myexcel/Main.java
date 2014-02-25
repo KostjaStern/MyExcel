@@ -17,6 +17,8 @@ public class Main
     {
     	Config.initLogs();
 
+    	// String exp = "B1 24 + C2 (2.6 67) B3 G4(F1 + H2)L3(D1- V2)(S3 / S4)";
+    	
     	System.out.println("Enter command : ");
     	System.out.println("    go   - for bagining calculation");
     	System.out.println("    exit - for exit  ");

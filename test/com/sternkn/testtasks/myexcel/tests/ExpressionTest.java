@@ -22,12 +22,12 @@ public class ExpressionTest
 	public void testExpression() 
 	{
 		
-		try {
-		    new Expression("(A24+2.56*0.59-21 /7+B8)/1.2-6.7*2+G4*7.21");
-		    fail("must be throw ExpressionException");
-		}
-		catch(ExpressionException e){
-		}
+//		try {
+//		    new Expression("(A24+2.56*0.59-21 /7+B8)/1.2-6.7*2+G4*7.21");
+//		    fail("must be throw ExpressionException");
+//		}
+//		catch(ExpressionException e){
+//		}
 		
 		
     	Expression exp = new Expression("(A24+2.56*0.59-21/7+B8)/1.2-6.7*2+G4*7.21");
